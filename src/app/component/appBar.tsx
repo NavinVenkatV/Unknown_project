@@ -1,22 +1,42 @@
 "use client"
 
-import { signIn, signOut } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"  // Correct import for client-side routing
 
- const Appbar = ()=>{
-    return (
-        <div className="w-full h-full flex justify-between">
-            <div>100xSchool</div>
-            <button className="bg-blue-700 p-5 mr-3" onClick={()=>{
-                signIn()
-            }}>Sign In</button>
-            <button className="bg-red-700 p-5"
-            onClick={()=>[
-                signOut()
-            ]}>
-                Sign Out
-            </button>
-        </div>
-    )
+const Appbar = () => {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  return (
+    <div className="w-full h-full flex justify-between p-5 bg-gray-800 text-white">
+      <div>100xSchool</div>
+
+      {/* Conditional rendering based on session */}
+      {!session ? (
+        <>
+          <button
+            className="bg-blue-700 p-3 rounded"
+            onClick={() => signIn()}
+          >
+            Sign In
+          </button>
+          <button
+            className="bg-green-700 p-3 rounded"
+            onClick={() => router.push('/')}
+          >
+            Sign Up
+          </button>
+        </>
+      ) : (
+        <button
+          className="bg-red-700 p-3 rounded"
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </button>
+      )}
+    </div>
+  )
 }
 
 export default Appbar;

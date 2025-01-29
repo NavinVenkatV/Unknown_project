@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 
 
-async function POST(req:NextRequest){
+export async function POST(req:NextRequest){
     const body = await req.json();
     try{
         const findUser = await prisma.user.findUnique({
@@ -17,6 +17,8 @@ async function POST(req:NextRequest){
         if(findUser){
             return NextResponse.json({
                 msg : "User already exists"
+            }, {
+                status : 401
             })
         }
        

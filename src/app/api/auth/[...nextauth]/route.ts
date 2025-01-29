@@ -34,7 +34,7 @@ const handler = NextAuth({
                     id : '1',
                     username : existingUser.username
                 }
-            }
+            }else return null;
         }
         const hash_pass = await bcrypt.hash(credentials.password, 10)
         await prisma.user.create({
